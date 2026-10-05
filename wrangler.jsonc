@@ -1,10 +1,21 @@
-// 纯静态导出站：不加 main 字段即为"仅静态资产" Worker，直接托管 out/ 目录，不经过 OpenNext
+// Worker = 静态资产（out/）+ 一个轻量脚本（/api/contact 的 Turnstile 校验）。
+// 未命中静态资产的请求才进脚本，其余由资产层直接返回。
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "myinfoweb",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+      "persist": true
+    }
+  },
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
 }

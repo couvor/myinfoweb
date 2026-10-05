@@ -1,3 +1,5 @@
+import ContactForm from "./contact-form";
+
 const channels = [
   {
     k: "GITHUB",
@@ -30,54 +32,55 @@ export default function Contact() {
         </h2>
 
         <div className="mt-20 grid gap-16 lg:grid-cols-12">
-          <div className="reveal lg:col-span-8">
-            {channels.map((c) => {
-              const inner = (
-                <>
-                  <span className="w-24 shrink-0 font-mono text-[10.5px] tracking-[0.3em] text-dim">
-                    {c.k}
-                  </span>
-                  <span className="flex-1 text-[clamp(1.05rem,2.2vw,1.6rem)] leading-snug text-fg/90 transition-colors duration-300 group-hover:text-fg">
-                    {c.v}
-                  </span>
-                  {c.href && (
-                    <span
-                      aria-hidden
-                      className="font-mono text-[13px] text-accent-soft opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
-                    >
-                      ↗
+          <div className="reveal lg:col-span-4">
+            <p className="text-[13.5px] leading-[2] text-mute">
+              无论是供应链安全检测的落地评估，还是家教场景的数字化协作，都欢迎与我们聊聊。留下你的想法，我们尽快回复。
+            </p>
+
+            <div className="mt-14">
+              {channels.map((c) => {
+                const inner = (
+                  <>
+                    <span className="w-24 shrink-0 font-mono text-[10.5px] tracking-[0.3em] text-dim">
+                      {c.k}
                     </span>
-                  )}
-                </>
-              );
-              return c.href ? (
-                <a
-                  key={c.k}
-                  href={c.href}
-                  target={c.href.startsWith("http") ? "_blank" : undefined}
-                  rel={c.href.startsWith("http") ? "noreferrer" : undefined}
-                  className="row-item group flex items-baseline gap-6 border-t border-line py-7 last:border-b"
-                >
-                  {inner}
-                </a>
-              ) : (
-                <div
-                  key={c.k}
-                  className="row-item group flex items-baseline gap-6 border-t border-line py-7 last:border-b"
-                >
-                  {inner}
-                </div>
-              );
-            })}
+                    <span className="flex-1 text-[clamp(0.95rem,1.6vw,1.15rem)] leading-snug text-fg/90 transition-colors duration-300 group-hover:text-fg">
+                      {c.v}
+                    </span>
+                    {c.href && (
+                      <span
+                        aria-hidden
+                        className="font-mono text-[13px] text-accent-soft opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
+                      >
+                        ↗
+                      </span>
+                    )}
+                  </>
+                );
+                return c.href ? (
+                  <a
+                    key={c.k}
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noreferrer" : undefined}
+                    className="row-item group flex items-baseline gap-5 border-t border-line py-5 last:border-b"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div
+                    key={c.k}
+                    className="row-item group flex items-baseline gap-5 border-t border-line py-5 last:border-b"
+                  >
+                    {inner}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="reveal reveal-late lg:col-span-3 lg:col-start-10 lg:self-end">
-            <p className="text-[13.5px] leading-[2] text-mute">
-              无论是供应链安全检测的落地评估，还是家教场景的数字化协作，都欢迎与我们聊聊。
-            </p>
-            <a href="mailto:contact@mingyanginfo.com" className="btn btn-primary mt-8">
-              给我们写邮件 <span aria-hidden>→</span>
-            </a>
+          <div className="reveal reveal-late lg:col-span-7 lg:col-start-6">
+            <ContactForm />
           </div>
         </div>
       </div>
