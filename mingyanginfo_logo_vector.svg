@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520">
+
+  <defs>
+    <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0A56D6"/>
+      <stop offset="58%" stop-color="#1D67EA"/>
+      <stop offset="100%" stop-color="#6EA8FF"/>
+    </linearGradient>
+    <linearGradient id="gradWord" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0A56D6"/>
+      <stop offset="68%" stop-color="#1B63E0"/>
+      <stop offset="100%" stop-color="#6EA8FF"/>
+    </linearGradient>
+    <style>
+      .branch { fill:none; stroke:url(#gradBlue); stroke-width:22; stroke-linecap:round; stroke-linejoin:round; }
+      .node-big { fill:url(#gradBlue); }
+      .node-mid { fill:url(#gradBlue); }
+      .node-small { fill:url(#gradBlue); }
+      .word { fill:url(#gradWord); font-family: Orbitron, Rajdhani, Arial, sans-serif; font-size: 136px; font-weight: 700; letter-spacing: -3px; }
+      .star { fill:url(#gradBlue); }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <g id="icon">
+    <path class="branch" d="M 155 355 C 210 316, 250 300, 305 280"/>
+    <path class="branch" d="M 305 280 C 338 286, 358 296, 385 310"/>
+    <path class="branch" d="M 155 355 C 206 355, 240 365, 285 410"/>
+    <path class="branch" d="M 285 410 C 325 426, 350 440, 385 458"/>
+    <circle class="node-big" cx="155" cy="355" r="38"/>
+    <circle class="node-mid" cx="305" cy="280" r="34"/>
+    <circle class="node-small" cx="385" cy="310" r="24"/>
+    <circle class="node-mid" cx="285" cy="410" r="32"/>
+    <circle class="node-small" cx="385" cy="458" r="26"/>
+    <path class="star" d="M 455 184 C 460 208, 467 215, 491 220 C 467 225, 460 232, 455 256 C 450 232, 443 225, 419 220 C 443 215, 450 208, 455 184 Z"/>
+  </g>
+  <text class="word" x="505" y="355" dominant-baseline="alphabetic">mingyanginfo</text>
+</svg>

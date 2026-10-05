@@ -1,0 +1,356 @@
+@import "tailwindcss";
+
+/* ————————————————— 主题变量（暗色为默认，.light 覆盖） ————————————————— */
+
+:root {
+  --bg: #0a0a0c;
+  --fg: #eceae4;
+  --mute: #90909a;
+  --dim: #5a5a63;
+  --surface: #1d1d23;
+  --line: rgb(236 234 228 / 0.08);
+  --line-strong: rgb(236 234 228 / 0.18);
+  --accent: #1d67ea;
+  --accent-soft: #6ea8ff;
+  --glass-shadow: 0 14px 44px rgb(0 0 0 / 0.24);
+  color-scheme: dark;
+}
+
+:root.light {
+  --bg: #f4f1ea;
+  --fg: #17171b;
+  --mute: #63636b;
+  --dim: #9a9aa1;
+  --surface: #e7e3d9;
+  --line: rgb(23 23 27 / 0.1);
+  --line-strong: rgb(23 23 27 / 0.24);
+  --accent: #1d67ea;
+  --accent-soft: #1a5adf;
+  --glass-shadow: 0 14px 44px rgb(23 23 27 / 0.1);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-mute: var(--mute);
+  --color-dim: var(--dim);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-serif: "Instrument Serif", "Songti SC", "STSong", serif;
+  --font-serifcn: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-sans:
+    system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+
+/* ————————————————— Base ————————————————— */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  transition:
+    background-color 0.6s ease,
+    color 0.6s ease;
+}
+
+::selection {
+  background: rgb(29 103 234 / 0.85);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent-soft);
+  outline-offset: 3px;
+}
+
+/* ————————————————— Texture ————————————————— */
+
+/* 细颗粒噪点，全站唯一全局覆盖层 */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.042;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 精细网格（配合 mask 渐隐使用） */
+.bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--fg) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--fg) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 76px 76px;
+}
+
+/* 空心大字（Hero 背景装饰） */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--fg) 13%, transparent);
+}
+
+/* 环境光斑 */
+.ambient {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(110px);
+}
+
+/* ————————————————— 液态玻璃（顶部导航） ————————————————— */
+
+.glass {
+  position: relative;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  backdrop-filter: blur(18px) saturate(1.7);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7);
+  border: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--fg) 5%, transparent),
+    var(--glass-shadow);
+  transition: background-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+/* 指针跟随的高光（「液态」感） */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    150px 64px at var(--mx, 50%) 0%,
+    color-mix(in srgb, white 16%, transparent),
+    transparent 72%
+  );
+}
+
+/* ————————————————— Motion ————————————————— */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5%, -3.5%, 0) scale(1.05);
+  }
+}
+
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* Hero 进场：慢速、带惯性的错落上浮 */
+.rise {
+  opacity: 0;
+  animation: rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.rise-2 { animation-delay: 0.12s; }
+.rise-3 { animation-delay: 0.26s; }
+.rise-4 { animation-delay: 0.42s; }
+.rise-5 { animation-delay: 0.6s; }
+
+.drift-slow {
+  animation: drift 16s ease-in-out infinite;
+}
+
+.cue-line {
+  animation: cue 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* 滚动显现：CSS scroll-driven，不支持则内容直接可见（渐进增强） */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 52%;
+  }
+  .reveal-late {
+    animation-range: entry 8% entry 62%;
+  }
+  /* Hero 光斑的轻微视差 */
+  .parallax {
+    animation: parallax linear both;
+    animation-timeline: view();
+    animation-range: exit -80% exit 0%;
+  }
+}
+
+@keyframes parallax {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(14vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    opacity: 1;
+    animation: none;
+  }
+  .drift-slow,
+  .cue-line,
+  .reveal,
+  .reveal-late,
+  .parallax {
+    animation: none;
+  }
+}
+
+/* ————————————————— Interactive ————————————————— */
+
+/* 下划线滑动（导航与正文链接） */
+.link-slide {
+  position: relative;
+}
+.link-slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-slide:hover::after,
+.link-slide:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* 方角按钮：边框光线扫过 + 轻微位移 */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.5s ease;
+  overflow: hidden;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--accent-soft);
+  color: var(--bg);
+  box-shadow: 0 8px 40px rgb(29 103 234 / 0.35);
+}
+.btn-ghost {
+  border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
+  color: var(--fg);
+}
+.btn-ghost:hover {
+  border-color: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+  box-shadow: inset 0 0 24px rgb(29 103 234 / 0.12);
+}
+
+/* 编辑感列表行：悬停时行体微移、序号点亮 */
+.row-item {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.row-item:hover {
+  transform: translateX(6px);
+}
+.row-item .row-index {
+  color: var(--dim);
+  transition: color 0.35s ease;
+}
+.row-item:hover .row-index {
+  color: var(--accent-soft);
+}
+
+/* 团队姓名悬停：品牌蓝滑动下划线（与 GitHub 按钮悬停同族） */
+.name-hover {
+  position: relative;
+  display: inline-block;
+}
+.name-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group\/p:hover .name-hover::after,
+.name-hover:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
