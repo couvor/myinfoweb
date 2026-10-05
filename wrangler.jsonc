@@ -5,11 +5,9 @@
   "name": "myinfoweb",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
-  // 测试项目：secret 直接走明文 vars（仓库公开可见）。正式化时在 Turnstile 控制台轮换 secret，
-  // 改用 `wrangler secret put TURNSTILE_SECRET_KEY` 并从此处移除明文
-  "vars": {
-    "TURNSTILE_SECRET_KEY": "0x4AAAAAAFOx-3PEHJok4RdYO7f2NDXFKDI"
-  },
+  // secret 通过 `wrangler secret put TURNSTILE_SECRET_KEY` 管理，不进仓库；
+  // keep_vars 必须开着：默认 deploy 会删除配置外的 secret
+  "keep_vars": true,
   "observability": {
     "enabled": true,
     "logs": {
