@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import "@fontsource/instrument-serif";
 import "@fontsource/instrument-serif/400-italic.css";
 import "@fontsource/ibm-plex-mono/400.css";
@@ -43,6 +42,9 @@ export const viewport: Viewport = {
 // 首帧之前同步主题，避免亮色用户看到暗色闪烁
 const themeInit = `(function(){try{var t=localStorage.getItem("theme");var light=t?t==="light":window.matchMedia("(prefers-color-scheme: light)").matches;if(light)document.documentElement.classList.add("light");}catch(e){}})()`;
 
+// Cloudflare Web Analytics：在 Cloudflare 控制台启用站点的 Web Analytics 后，把 beacon token 填入此处即可开启统计
+const cfAnalyticsToken = "";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -51,7 +53,13 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         {children}
-        <Analytics />
+        {cfAnalyticsToken && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: cfAnalyticsToken })}
+          />
+        )}
         <div aria-hidden className="grain" />
       </body>
     </html>

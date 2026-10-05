@@ -1,0 +1,10 @@
+// 纯静态导出站：不加 main 字段即为"仅静态资产" Worker，直接托管 out/ 目录，不经过 OpenNext
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "myinfoweb",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}

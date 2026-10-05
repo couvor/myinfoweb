@@ -1,12 +1,13 @@
 node_modules/
 .next/
 out/
+.open-next/
+.wrangler/
+.dev.vars
 _source/
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
-
-.vercel
 
 .mimosa/
 .zcode/
