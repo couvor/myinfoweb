@@ -4,7 +4,7 @@
 
 interface Env {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
-  TURNSTILE_SECRET_KEY?: string;
+  RECAPTCHA_SECRET_KEY?: string;
   MESSAGES_DB: {
     prepare: (sql: string) => {
       bind: (...values: (string | null)[]) => { run: () => Promise<unknown> };
@@ -14,14 +14,14 @@ interface Env {
 
 interface SiteverifyResult {
   success: boolean;
-  action?: string;
   hostname?: string;
   "error-codes"?: string[];
 }
 
-const SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+// reCAPTCHA v2 siteverify：主用 recaptcha.net（大陆可访问的官方镜像域名），google.com 等价
+const SITEVERIFY_URL = "https://www.recaptcha.net/recaptcha/api/siteverify";
+const SITEVERIFY_HOSTS = new Set(["www.recaptcha.net", "www.google.com"]);
 const ALLOWED_HOSTNAMES = ["mingyanginfo.com", "www.mingyanginfo.com"];
-const EXPECTED_ACTION = "contact";
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -58,12 +58,12 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
 
   // 出站请求前校验目标：仅允许 https 且为 siteverify 官方域名
   const target = new URL(SITEVERIFY_URL);
-  if (target.protocol !== "https:" || target.hostname !== "challenges.cloudflare.com") {
+  if (target.protocol !== "https:" || !SITEVERIFY_HOSTS.has(target.hostname)) {
     return json({ ok: false, error: "server_config" }, 500);
   }
 
   const params = new URLSearchParams({
-    secret: env.TURNSTILE_SECRET_KEY ?? "",
+    secret: env.RECAPTCHA_SECRET_KEY ?? "",
     response: token,
   });
   const ip = request.headers.get("cf-connecting-ip");
@@ -83,7 +83,7 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
   }
 
   if (!result.success) {
-    console.log(JSON.stringify({ event: "turnstile_rejected", codes: result["error-codes"] ?? [] }));
+    console.log(JSON.stringify({ event: "recaptcha_rejected", codes: result["error-codes"] ?? [] }));
     // invalid-input-secret 是服务端配置问题，其余（token 过期/重放/伪造）都按验证失败处理
     const code = result["error-codes"]?.[0];
     return json(
@@ -91,7 +91,6 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
       403,
     );
   }
-  if (result.action !== EXPECTED_ACTION) return json({ ok: false, error: "captcha_failed" }, 403);
   const host = result.hostname ?? "";
   if (!ALLOWED_HOSTNAMES.includes(host) && !host.endsWith(".workers.dev")) {
     return json({ ok: false, error: "captcha_failed" }, 403);
