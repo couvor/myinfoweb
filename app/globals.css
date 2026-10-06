@@ -299,6 +299,14 @@ body {
 .btn:hover {
   transform: translateY(-2px);
 }
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
 .btn-primary {
   background: var(--accent);
   color: #fff;

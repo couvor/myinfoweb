@@ -121,7 +121,9 @@ export default function ContactForm() {
   );
 
   useEffect(() => {
-    if (tsReady) window.turnstile?.ready(renderTurnstile);
+    // 不能用 turnstile.ready()：next/script 注入的 api.js 带 async 属性，ready() 会直接抛
+    // TurnstileError 炸掉整个应用；onReady 已保证脚本执行完毕，显式渲染直接调用即可
+    if (tsReady) renderTurnstile();
   }, [tsReady, renderTurnstile]);
 
   // —— reCAPTCHA v2 勾选框 ——
@@ -274,11 +276,13 @@ export default function ContactForm() {
       <Script
         src={TURNSTILE_SRC}
         strategy="lazyOnload"
+        crossOrigin="anonymous"
         onReady={() => setTsReady(true)}
       />
       <Script
         src={RECAPTCHA_SRC}
         strategy="lazyOnload"
+        crossOrigin="anonymous"
         onReady={() => setRcReady(true)}
       />
       <form onSubmit={onSubmit} noValidate>
@@ -329,34 +333,37 @@ export default function ContactForm() {
           />
         </div>
 
-        <div className="mt-12">
-          <div ref={attachRcHolder} aria-label="Google 人机验证" />
-        </div>
+        {/* 提交区：细线收束表单，验证居左、动作居右，像签名栏一样收尾 */}
+        <div className="mt-14 border-t border-line pt-8">
+          <div className="flex flex-wrap items-center justify-between gap-8">
+            <div ref={attachRcHolder} aria-label="Google 人机验证" />
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={busy || !rcToken}
+              title={rcToken ? "" : "请先完成「我不是机器人」验证"}
+            >
+              {status === "verifying"
+                ? "人机验证中 …"
+                : status === "sending"
+                  ? "发送中 …"
+                  : "发送留言"}
+              {busy ? null : <span aria-hidden>→</span>}
+            </button>
+          </div>
 
-        <div className="mt-10 flex flex-wrap items-center gap-6">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={busy || !rcToken}
-            title={rcToken ? "" : "请先完成「我不是机器人」验证"}
-          >
-            {status === "verifying"
-              ? "人机验证中 …"
-              : status === "sending"
-                ? "发送中 …"
-                : "发送留言"}
-            {busy ? null : <span aria-hidden>→</span>}
-          </button>
-          <div ref={attachTsHolder} aria-label="进站人机验证" />
-          <p
-            role="status"
-            aria-live="polite"
-            className={`font-mono text-[12px] tracking-[0.08em] ${
-              status === "error" ? "text-accent-soft" : "text-dim"
-            }`}
-          >
-            {rcToken ? note : "发送前请先完成「我不是机器人」验证"}
-          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-6">
+            <div ref={attachTsHolder} aria-label="进站人机验证" />
+            <p
+              role="status"
+              aria-live="polite"
+              className={`font-mono text-[12px] tracking-[0.08em] ${
+                status === "error" ? "text-accent-soft" : "text-dim"
+              }`}
+            >
+              {rcToken ? note : "发送前请先完成「我不是机器人」验证"}
+            </p>
+          </div>
         </div>
       </form>
     </>
