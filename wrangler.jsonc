@@ -9,11 +9,12 @@
   // keep_vars 必须开着：默认 deploy 会删除配置外的 secret
   "keep_vars": true,
   "observability": {
-    "enabled": true,
     "logs": {
       "enabled": true,
-      "invocation_logs": true,
-      "persist": true
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false
     }
   },
   "assets": {
