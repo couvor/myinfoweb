@@ -115,7 +115,7 @@ export default function ContactForm() {
           <span className="font-serif font-normal italic text-accent-soft"> Thank you.</span>
         </p>
         <p className="mt-5 max-w-md text-[13.5px] leading-[2] text-mute">
-          留言已送达，我们通常在一个工作日内回复你的邮箱。
+          留言已送达，重要信息请使用电子邮件联系。
         </p>
         <button
           type="button"
@@ -182,7 +182,7 @@ export default function ContactForm() {
             required
             rows={4}
             maxLength={5000}
-            placeholder="想聊点什么：合作、产品、还是仅仅打个招呼"
+            placeholder="想聊点什么：合作、产品、还是仅仅打个招呼，发送邮件会更快与我们取得联系"
             className={`${fieldInput} resize-none leading-relaxed`}
           />
         </div>

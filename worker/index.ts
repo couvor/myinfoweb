@@ -5,6 +5,11 @@
 interface Env {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
   TURNSTILE_SECRET_KEY?: string;
+  MESSAGES_DB: {
+    prepare: (sql: string) => {
+      bind: (...values: (string | null)[]) => { run: () => Promise<unknown> };
+    };
+  };
 }
 
 interface SiteverifyResult {
@@ -92,7 +97,7 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
     return json({ ok: false, error: "captcha_failed" }, 403);
   }
 
-  // 留言落盘方式：Workers Logs（observability persist）。控制台 → Logs 可查。
+  // 留言双写：Workers Logs（便于即时排查）+ D1 永久存储（查看留言.cmd 读取）
   console.log(
     JSON.stringify({
       event: "contact_submission",
@@ -104,5 +109,13 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
       userAgent: request.headers.get("user-agent") ?? null,
     }),
   );
+  try {
+    await env.MESSAGES_DB.prepare(
+      "INSERT INTO messages (name, email, message, ip, user_agent) VALUES (?, ?, ?, ?, ?)",
+    ).bind(name || null, email, message, ip, request.headers.get("user-agent")).run();
+  } catch (e) {
+    console.log(JSON.stringify({ event: "storage_failed", error: String(e).slice(0, 500) }));
+    return json({ ok: false, error: "storage_failed" }, 503);
+  }
   return json({ ok: true });
 }

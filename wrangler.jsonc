@@ -21,5 +21,12 @@
     "directory": "./out",
     "binding": "ASSETS",
     "not_found_handling": "404-page"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "MESSAGES_DB",
+      "database_name": "mingyang-messages",
+      "database_id": "74694923-0004-4b66-8607-12e34f2f3676"
+    }
+  ]
 }
