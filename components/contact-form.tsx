@@ -78,7 +78,7 @@ export default function ContactForm() {
 
   const renderTurnstile = useCallback(() => {
     if (!tsHolder.current || !window.turnstile || tsWidgetId.current) return;
-    const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
+    const theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
     tsWidgetId.current = window.turnstile.render(tsHolder.current, {
       sitekey: TURNSTILE_SITE_KEY,
       action: "contact",
@@ -129,7 +129,7 @@ export default function ContactForm() {
   // —— reCAPTCHA v2 勾选框 ——
   const renderRecaptcha = useCallback(() => {
     if (!rcHolder.current || !window.grecaptcha || rcWidgetId.current !== undefined) return;
-    const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
+    const theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
     rcWidgetId.current = window.grecaptcha.render(rcHolder.current, {
       sitekey: RECAPTCHA_SITE_KEY,
       theme,

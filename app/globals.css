@@ -1,22 +1,8 @@
 @import "tailwindcss";
 
-/* ————————————————— 主题变量（暗色为默认，.light 覆盖） ————————————————— */
+/* ————————————————— 主题变量（亮色为默认，.dark 覆盖） ————————————————— */
 
 :root {
-  --bg: #0a0a0c;
-  --fg: #eceae4;
-  --mute: #90909a;
-  --dim: #5a5a63;
-  --surface: #1d1d23;
-  --line: rgb(236 234 228 / 0.08);
-  --line-strong: rgb(236 234 228 / 0.18);
-  --accent: #1d67ea;
-  --accent-soft: #6ea8ff;
-  --glass-shadow: 0 14px 44px rgb(0 0 0 / 0.24);
-  color-scheme: dark;
-}
-
-:root.light {
   --bg: #f4f1ea;
   --fg: #17171b;
   --mute: #63636b;
@@ -28,6 +14,20 @@
   --accent-soft: #1a5adf;
   --glass-shadow: 0 14px 44px rgb(23 23 27 / 0.1);
   color-scheme: light;
+}
+
+:root.dark {
+  --bg: #0a0a0c;
+  --fg: #eceae4;
+  --mute: #90909a;
+  --dim: #5a5a63;
+  --surface: #1d1d23;
+  --line: rgb(236 234 228 / 0.08);
+  --line-strong: rgb(236 234 228 / 0.18);
+  --accent: #1d67ea;
+  --accent-soft: #6ea8ff;
+  --glass-shadow: 0 14px 44px rgb(0 0 0 / 0.24);
+  color-scheme: dark;
 }
 
 @theme inline {

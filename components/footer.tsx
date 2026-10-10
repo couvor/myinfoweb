@@ -57,8 +57,14 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-line pt-6 font-mono text-[10.5px] tracking-[0.18em] text-dim sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 MINGYANG INFO · ALL RIGHTS RESERVED</span>
-          {/* ICP 备案号占位：备案下来后替换为真实备案号并链接至 beian.miit.gov.cn */}
-          <span>陕ICP备XXXXXXXX号</span>
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors duration-300 hover:text-fg"
+          >
+            陕ICP备2026028201号
+          </a>
         </div>
       </div>
     </footer>
