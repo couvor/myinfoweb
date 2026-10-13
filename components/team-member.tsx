@@ -1,12 +1,7 @@
 "use client";
 
-export type TeamPerson = {
-  name: string;
-  photo: string;
-  role: string;
-  school: string;
-  bio: string;
-};
+import Link from "next/link";
+import type { TeamPerson } from "@/data/team";
 
 export default function TeamMember({ p, i }: { p: TeamPerson; i: number }) {
   // 浮窗位置：移动端在姓名上方弹出（左右对齐随 2 列网格）；
@@ -14,10 +9,10 @@ export default function TeamMember({ p, i }: { p: TeamPerson; i: number }) {
   const mobileAlign = i % 2 === 0 ? "left-0" : "right-0";
   return (
     <div className="group/p relative">
-      <button
-        type="button"
+      <Link
+        href={`/${p.slug}`}
         aria-describedby={`person-tip-${i}`}
-        className="cursor-help text-left"
+        className="cursor-pointer text-left"
       >
         <span className="name-hover block font-serifcn text-[22px] font-semibold leading-tight text-fg/90 transition-colors duration-300 group-hover/p:text-accent-soft">
           {p.name}
@@ -25,7 +20,7 @@ export default function TeamMember({ p, i }: { p: TeamPerson; i: number }) {
         <span className="mt-1.5 block font-mono text-[10.5px] tracking-[0.14em] text-dim transition-colors duration-300 group-hover/p:text-mute">
           {p.role}
         </span>
-      </button>
+      </Link>
       <span
         role="tooltip"
         id={`person-tip-${i}`}
@@ -62,6 +57,9 @@ export default function TeamMember({ p, i }: { p: TeamPerson; i: number }) {
         </span>
         <span className="mt-5 block border-t border-line pt-4 text-[13.5px] leading-[1.9] text-mute">
           {p.bio}
+        </span>
+        <span className="mt-4 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.24em] text-dim transition-colors duration-300 group-hover/p:text-accent-soft">
+          VIEW PROFILE <span aria-hidden>→</span>
         </span>
       </span>
     </div>

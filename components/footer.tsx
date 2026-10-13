@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 const nav = [
-  { href: "#about", label: "关于" },
-  { href: "#products", label: "产品" },
-  { href: "#tech", label: "技术" },
-  { href: "#contact", label: "联系" },
+  { href: "/#about", label: "关于" },
+  { href: "/#products", label: "产品" },
+  { href: "/#tech", label: "技术" },
+  { href: "/#contact", label: "联系" },
 ];
 
 export default function Footer() {
@@ -11,7 +13,7 @@ export default function Footer() {
       <div className="mx-auto max-w-[1440px] px-6 py-14 lg:px-12">
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           <div>
-            <a href="#top" className="group flex items-baseline gap-3" aria-label="明旸信息 — 返回顶部">
+            <Link href="/" className="group flex items-baseline gap-3" aria-label="明旸信息 — 返回首页">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo-icon.svg?v=2"
@@ -26,7 +28,7 @@ export default function Footer() {
               <span className="font-mono text-[10px] tracking-[0.34em] text-dim">
                 MINGYANGINFO
               </span>
-            </a>
+            </Link>
             <p className="mt-5 text-[12.5px] leading-[1.9] text-dim">
               西安明旸信息技术有限公司
               <br />
@@ -36,13 +38,13 @@ export default function Footer() {
 
           <nav aria-label="页脚导航" className="flex flex-wrap gap-x-10 gap-y-3">
             {nav.map((n) => (
-              <a
+              <Link
                 key={n.href}
                 href={n.href}
                 className="link-slide font-mono text-[11.5px] tracking-[0.2em] text-mute transition-colors hover:text-fg"
               >
                 {n.label}
-              </a>
+              </Link>
             ))}
             <a
               href="https://github.com/couvor/monituos"

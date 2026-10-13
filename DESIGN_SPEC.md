@@ -86,6 +86,15 @@
 - Logo 图标：`/logo-icon.svg`（蓝色渐变网络节点，透明底）；锁屏组合 = 图标 + 「明旸信息」(serifcn 600) + `MINGYANGINFO`(mono 10px tracking .34em text-dim)
 - 公司全称：西安明旸信息技术有限公司 / XI'AN MINGYANG INFORMATION TECHNOLOGY CO., LTD.
 
-## 10. 禁止清单
+## 10. 成员个人主页（`/{slug}`）
+
+- 路由 `app/[slug]/page.tsx`：`generateStaticParams` 在构建期为每位成员生成静态 HTML（`out/{slug}/index.html`），`dynamicParams = false`；未知 slug 走全局 404
+- 数据唯一来源 `data/team.ts`：首页「创始团队」名单与个人主页共用；新增成员只改这一处 + 放头像（`public/team/拼音.png`）
+- slug 规则：姓名拼音首字母缩写（羿德钰 → `ydy`），全小写、无连字符
+- 版式：液态玻璃顶栏（logo 锁定组合 + 返回 + `components/theme-toggle.tsx`）；不对称栅格照片 5 / 文字 7；单个 accent 光斑 + 渐隐网格；`rise` 错落进场；发丝线资料行（职务 / 院校 / 主页）；照片 `aspect-square rounded-2xl border-line bg-surface`
+- 导航：PREV / NEXT 按 `team` 数组顺序环形切换；页脚等站内锚点必须带 `/#` 前缀（子页面可跳回首页对应区块）
+- `generateMetadata` 输出「姓名 · 职务 — 明旸信息」
+
+## 11. 禁止清单
 
 默认 Inter + 全粗体 ｜ 紫/蓝渐变大字 ｜ 玻璃拟态滥用 ｜ 图标库堆砌（Lucide/emoji）｜ 胶囊按钮泛滥 ｜ 每区块同宽卡片阵列 ｜ Trusted-by/Testimonials 模板块 ｜ 写死色值绕过主题变量 ｜ 暗色模式下直接用亮色 token
