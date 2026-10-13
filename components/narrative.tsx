@@ -47,6 +47,20 @@ const team: TeamPerson[] = [
     school: "浙江大学信息与电子工程学院",
     bio: "负责核心产品研发工作。", // 占位简介，待替换
   },
+  {
+    name: "汪桠然",
+    photo: "/team/wang-yaran.png",
+    role: "产品经理",
+    school: "西北大学",
+    bio: "负责产品规划与设计工作。", // 占位简介，待替换
+  },
+  {
+    name: "尹梓旭",
+    photo: "/team/yin-zixu.png",
+    role: "产品经理",
+    school: "陕西师范大学",
+    bio: "负责产品规划与设计工作。", // 占位简介，待替换
+  },
 ];
 
 export default function Narrative() {
