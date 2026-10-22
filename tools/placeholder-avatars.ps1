@@ -10,7 +10,8 @@ $people = @(
   @{ f = "tan-yusen";        ch = "谈" },
   @{ f = "ouyang-zhaoqin";   ch = "欧阳" },
   @{ f = "wang-yaran";       ch = "汪" },
-  @{ f = "yin-zixu";         ch = "尹" }
+  @{ f = "yin-zixu";         ch = "尹" },
+  @{ f = "chen-jingyu";      ch = "陈" }
 )
 
 foreach ($p in $people) {

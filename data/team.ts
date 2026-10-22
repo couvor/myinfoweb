@@ -100,4 +100,15 @@ export const team: TeamPerson[] = [
     intro:
       "负责产品规划与需求设计，连接用户场景与产品迭代节奏，让每一次交付都回应真实需求。",
   },
+  {
+    name: "陈镜宇",
+    latin: "Chen Jingyu",
+    slug: "cjy",
+    photo: "/team/chen-jingyu.png",
+    role: "技术顾问",
+    school: "西安邮电大学",
+    bio: "负责技术方向咨询与方案指导。", // 占位简介，待替换
+    intro:
+      "作为技术顾问，为公司提供技术方向咨询与架构建议，参与关键技术方案的评审与把关。",
+  },
 ];

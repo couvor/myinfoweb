@@ -8,6 +8,9 @@
   // secret 通过 `wrangler secret put TURNSTILE_SECRET_KEY` 管理，不进仓库；
   // keep_vars 必须开着：默认 deploy 会删除配置外的 secret
   "keep_vars": true,
+  // www 子域同样走这个 Worker：此前 www 只有被代理的 DNS 记录、没有 worker 绑定，
+  // 请求回源超时返回 522；主域 apex 用的是控制台里的 Custom Domain，不受影响。
+  "routes": [{ "pattern": "www.mingyanginfo.com/*", "zone_name": "mingyanginfo.com" }],
   "observability": {
     "logs": {
       "enabled": true,
